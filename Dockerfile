@@ -9,10 +9,7 @@ RUN apt-get update -y --fix-missing && \
   make \
   curl \
   xz-utils \
-  file \
-  gcc \
-  g++
-
+  file
 
 RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp/neologd && \
   cd /tmp/neologd && \
@@ -21,12 +18,9 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git /tmp
 
 # echo "ももいろクローバー" mecab -d `mecab-config --dicdir`"/mecab-ipadic-neologd"
 
-RUN git clone --depth 1 https://github.com/taku910/mecab.git /tmp/mecab && \
-  cd /tmp/mecab/mecab/python && \
-  python setup.py build && \
-  python setup.py install
+RUN pip install natto-py
 
-# python -c "import MeCab; print(MeCab.Tagger('-d /usr/lib/mecab/dic/mecab-ipadic-neologd').parse('ももいろクローバー'))"
+# python -c "from natto import MeCab; print(MeCab.Tagger('-d /usr/lib/mecab/dic/mecab-ipadic-neologd').parse('ももいろクローバー'))"
 
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "/bin/bash" ]
